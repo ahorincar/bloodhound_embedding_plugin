@@ -1,0 +1,67 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:i18n="http://genshi.edgewall.org/i18n">
+      <link rel="stylesheet" href="${href.chrome('dashboard/css/bootstrap.css')}" type="text/css" />
+      <link rel="stylesheet" href="${href.chrome('dashboard/css/bootstrap-responsive.css')}" type="text/css" />
+      <link rel="stylesheet" href="${href.chrome('embedding/embedding.css')}" type="text/css" />
+
+  <head>
+    <title>Milestone ${milestone.name}</title>
+  </head>
+
+  <body>
+    <h2><a target="_blank" href="${href.milestone(milestone.name)}">${milestone.name}</a></h2>
+
+    <table class="table table-condensed ticket-properties">
+      <tr>
+        <th class="properties">Description</th>
+        <py:choose>
+          <td py:when="milestone.description">${milestone.description}</td>
+          <td py:otherwise="">none</td>
+        </py:choose>
+      </tr>
+      <tr>
+        <th class="properties">Product</th>
+        <td><a target="_blank" href="${href.products(product.prefix)}">${product.name}</a></td>
+      </tr>
+      <tr>
+        <th class="properties">Number of Tickets</th>
+        <py:choose>
+          <td py:when="ticket_number">
+            <a target="_blank" href="${href.query(milestone=milestone.name, status='!closed'
+                                      , order='priority')}">${ticket_number}</a></td>
+          <td py:otherwise="">0</td>
+        </py:choose>
+      </tr>
+      <tr>
+        <th class="properties">Number of Attachments</th>
+        <py:choose>
+          <td py:when="attachment_number"><a target="_blank" href="${href.attachment('milestone'
+                                               , milestone.name)}">${attachment_number}</a></td>
+          <td py:otherwise="">0</td>
+        </py:choose>
+      </tr>
+      <tr>
+        <th class="properties">Status</th>
+        <py:choose>
+          <td py:when="milestone.completed">Completed on
+            <a target="_blank" href="${href('timeline', {'from': milestone.completed})}">
+                                     ${format_datetime(milestone.completed)}</a>
+          </td>
+          <td py:when="milestone.is_late">Is late since
+            <a target="_blank" href="${href('timeline', {'from': milestone.due})}">
+                                     ${format_datetime(milestone.due)}</a>
+          </td>
+          <td py:when="milestone.due">Due on
+            <a target="_blank" href="${href('timeline', {'from': milestone.due})}">
+                                     ${format_datetime(milestone.due)}</a>
+          </td>
+         </py:choose>
+      </tr>
+    </table>
+  </body>
+</html>
